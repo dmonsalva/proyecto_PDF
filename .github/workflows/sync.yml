@@ -24,7 +24,7 @@ jobs:
 
       - name: Verificar si hay cambios antes de commit
         run: |
-          git add .
+          git add --all
           if git diff --cached --quiet; then
             echo "No hay cambios para sincronizar. Terminando ejecución."
             exit 0

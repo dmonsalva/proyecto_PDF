@@ -1,0 +1,26 @@
+name: Manual Sync Workflow
+
+on:
+  workflow_dispatch:  # Permite ejecución manual
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar identidad de Git
+        run: |
+          git config --global user.email "cobooz.co@gmail.com"
+          git config --global user.name "dmonsalva"
+
+      - name: Descargar cambios remotos
+        run: git pull origin main --rebase
+
+      - name: Agregar y confirmar cambios
+        run: |
+          git add .
+          git commit -m "Sincronización manual"
+          git push

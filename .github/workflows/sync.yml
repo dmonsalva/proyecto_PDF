@@ -1,5 +1,6 @@
 name: Manual Sync Workflow
-
+permissions:
+  contents: write
 on:
   workflow_dispatch:  # Permite ejecución manual
 

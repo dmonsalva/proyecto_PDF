@@ -1,27 +1,29 @@
-name: Manual Sync Workflow
-permissions:
-  contents: write
+name: Sincronizar repositorio
+
 on:
-  workflow_dispatch:  # Permite ejecución manual
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '*/5 * * * *'  # Ejecutar cada 5 minutos
 
 jobs:
-  sync:
+  sincronizar:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
-      - name: Checkout del repositorio
+      - name: Clonar repositorio
         uses: actions/checkout@v3
 
-      - name: Configurar identidad de Git
+      - name: Configurar usuario Git
         run: |
-          git config --global user.email "cobooz.co@gmail.com"
-          git config --global user.name "dmonsalva"
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "github-actions@github.com"
 
-      - name: Descargar cambios remotos
-        run: git pull origin main --rebase
-
-      - name: Agregar y confirmar cambios
+      - name: Commit y push de cambios
         run: |
           git add .
-          git commit -m "Sincronización manual"
-          git push
+          git commit -m "Sincronización automática"
+          git push origin main

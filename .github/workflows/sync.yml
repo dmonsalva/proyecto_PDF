@@ -22,12 +22,14 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "github-actions@github.com"
 
-      - name: Verificar si hay cambios antes de commit
+      - name: Agregar y verificar archivos nuevos
         run: |
           git add --all
-          if git diff --cached --quiet; then
-            echo "No hay cambios para sincronizar. Terminando ejecución."
+          if git status | grep -q "Untracked files"; then
+            echo "Archivos nuevos detectados, realizando commit."
+            git commit -m "Sincronización automática con archivos nuevos"
+            git push origin main
+          else
+            echo "No hay archivos nuevos para sincronizar."
             exit 0
           fi
-          git commit -m "Sincronización automática"
-          git push origin main

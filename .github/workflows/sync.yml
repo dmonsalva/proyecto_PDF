@@ -1,4 +1,4 @@
-name: Sincronizar repositorio
+name: Sincronización completa del repositorio
 
 on:
   push:
@@ -22,14 +22,14 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "github-actions@github.com"
 
-      - name: Agregar y verificar archivos nuevos
+      - name: Detectar cambios en la carpeta
         run: |
           git add --all
-          if git status | grep -q "Untracked files"; then
-            echo "Archivos nuevos detectados, realizando commit."
-            git commit -m "Sincronización automática con archivos nuevos"
+          if git status --porcelain | grep -qE '^( A| M| D| R) '; then
+            echo "Cambios detectados en la carpeta, realizando commit."
+            git commit -m "Sincronización automática: archivos nuevos, renombrados y eliminados"
             git push origin main
           else
-            echo "No hay archivos nuevos para sincronizar."
+            echo "No hay cambios que sincronizar."
             exit 0
           fi

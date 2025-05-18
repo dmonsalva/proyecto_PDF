@@ -22,8 +22,12 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "github-actions@github.com"
 
-      - name: Commit y push de cambios
+      - name: Verificar si hay cambios antes de commit
         run: |
           git add .
+          if git diff --cached --quiet; then
+            echo "No hay cambios para sincronizar. Terminando ejecución."
+            exit 0
+          fi
           git commit -m "Sincronización automática"
           git push origin main
